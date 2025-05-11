@@ -1,7 +1,6 @@
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
-from pages.views import page_not_found, server_error, csrf_failure
 
 handler404 = 'pages.views.page_not_found'
 handler500 = 'pages.views.server_error'

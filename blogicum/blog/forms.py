@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
 from blog.models import Post, Comment
 
 User = get_user_model()
@@ -27,4 +26,4 @@ class PostForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('text',) 
+        fields = ('text',)
