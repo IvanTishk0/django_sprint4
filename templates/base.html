@@ -5,22 +5,75 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{% static 'img/fav/favicon.ico' %}" type="image">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
-    <title>
-      {% block title %}{% endblock %}
-    </title>
-    {% bootstrap_css %}
+    <link rel="icon" href="img/fav/fav.ico" type="image">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/fav/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#000">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    {% include "includes/header.html" %}
+    <header>
+      <nav class="navbar navbar-light" style="background-color: lightskyblue">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'blog:index' %}">
+            <img src="img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            Блогикум
+          </a>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog:index' %}">
+                Лента записей
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'pages:about' %}">
+                О проекте
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'pages:rules' %}">
+                Наши правила
+              </a>
+            </li>
+          </ul>
+          <ul class="nav nav-pills">
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'blog:profile' user.username %}">
+                  {{ user.username }}
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                  Выйти
+                </a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">
+                  Войти
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'blog:registration' %}">
+                  Регистрация
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </header>
     <main>
       <div class="container py-5">
         {% block content %}{% endblock %}
       </div>
     </main>
-    {% include "includes/footer.html" %}
+    <footer class="border-top text-center py-3">
+      <p>© Блогикум</p>
+    </footer>
   </body>
 </html>

@@ -12,22 +12,19 @@
     <div class="col d-flex justify-content-center">
       <div class="card" style="width: 40rem;">
         <div class="card-header">
-          {% if '/edit_comment/' in request.path %}
-            Редактирование комментария
-          {% else %}
+          {% if '/delete/' in request.path %}
             Удаление комментария
+          {% else %}
+            Редактирование комментария
           {% endif %}
         </div>
         <div class="card-body">
-          <form method="post"
-            {% if '/edit_comment/' in request.path %}
-              action="{% url 'blog:edit_comment' comment.post_id comment.id %}"
-            {% endif %}>
+          <form method="post">
             {% csrf_token %}
-            {% if not '/delete_comment/' in request.path %}
+            {% if not '/delete/' in request.path %}
               {% bootstrap_form form %}
             {% else %}
-              <p>{{ comment.text }}</p>
+              <p>{{ object.text }}</p>
             {% endif %}
             {% bootstrap_button button_type="submit" content="Отправить" %}
           </form>

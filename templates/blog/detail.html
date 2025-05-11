@@ -26,17 +26,50 @@
           </small>
         </h6>
         <p class="card-text">{{ post.text|linebreaksbr }}</p>
-        {% if user == post.author %}
-          <div class="mb-2">
-            <a class="btn btn-sm text-muted" href="{% url 'blog:edit_post' post.id %}" role="button">
-              Отредактировать публикацию
-            </a>
-            <a class="btn btn-sm text-muted" href="{% url 'blog:delete_post' post.id %}" role="button">
-              Удалить публикацию
-            </a>
-          </div>
+        {% if user.is_authenticated and user == post.author %}
+          <a class="btn btn-primary" href="{% url 'blog:edit_post' post.pk %}">
+            Редактировать запись
+          </a>
+          <a class="btn btn-danger" href="{% url 'blog:delete_post' post.pk %}">
+            Удалить запись
+          </a>
         {% endif %}
-        {% include "includes/comments.html" %}
+      </div>
+    </div>
+  </div>
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        Комментарии ({{ comments.count }})
+      </div>
+      <div class="card-body">
+        {% if user.is_authenticated %}
+          <form method="post" action="{% url 'blog:add_comment' post.pk %}">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_button button_type="submit" content="Отправить" %}
+          </form>
+        {% endif %}
+        {% for comment in comments %}
+          <div class="media mb-4">
+            <div class="media-body">
+              <h5 class="mt-0">
+                <a href="{% url 'blog:profile' comment.author.username %}">
+                  @{{ comment.author.username }}
+                </a>
+              </h5>
+              <p>{{ comment.text|linebreaksbr }}</p>
+              {% if user.is_authenticated and user == comment.author %}
+                <a class="btn btn-primary" href="{% url 'blog:edit_comment' post.pk comment.pk %}">
+                  Редактировать
+                </a>
+                <a class="btn btn-danger" href="{% url 'blog:delete_comment' post.pk comment.pk %}">
+                  Удалить
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>
